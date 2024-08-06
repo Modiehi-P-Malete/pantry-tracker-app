@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Stack, Typography, Button, CircularProgress, TextField, Modal } from '@mui/material';
+import { Box, Stack, Typography, Button, CircularProgress, TextField, Modal, Grid } from '@mui/material';
 import { firestore } from '@/firebase';
 import { collection, doc, getDocs, query, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import MuiAlert from '@mui/material/Alert';
@@ -134,7 +134,7 @@ export default function Home() {
         },
       }}
     >
-      <Typography className="title">
+      <Typography variant="h4" component="h1" gutterBottom>
         Pantry-Tracker
       </Typography>
 
@@ -152,8 +152,8 @@ export default function Home() {
       </Stack>
 
       <Stack direction="row" spacing={4} width="100%" maxWidth="1200px">
-        <Box className="box" width="50%">
-          <Typography className="box-header">
+        <Box width="100%">
+          <Typography variant="h6" textAlign="center" gutterBottom>
             Pantry Items
           </Typography>
           {loading ? (
@@ -198,41 +198,62 @@ export default function Home() {
             </Stack>
           )}
         </Box>
+      </Stack>
 
-        <Box className="box" width="50%">
-          <Typography className="box-header">
-            Recipes
-          </Typography>
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Stack spacing={2}>
-              {recipes.length ? (
-                recipes.map((recipe, index) => (
+      {/* Recipes Section */}
+      <Box
+        width="100%"
+        maxWidth="1200px"
+        mt={4}
+        p={2}
+        borderRadius="8px"
+        border="1px solid #333"
+        bgcolor="#f9f9f9"
+      >
+        <Typography variant="h6" textAlign="center" mb={2}>
+          Recipe Ideas
+        </Typography>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Grid container spacing={2}>
+            {recipes.length ? (
+              recipes.map((recipe, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
                   <Box
-                    key={index}
                     display="flex"
                     flexDirection="column"
                     p={2}
                     borderRadius="4px"
                     bgcolor="#fff"
                     boxShadow="0 4px 8px rgba(0,0,0,0.1)"
+                    textAlign="center"
                   >
-                    <Typography variant="h6">{recipe.title}</Typography>
-                    <img src={recipe.image} alt={recipe.title} style={{ width: '100%', borderRadius: '4px' }} />
-                    <Typography variant="body2">{recipe.summary}</Typography>
+                    <img
+                      src={recipe.image}
+                      alt={recipe.title}
+                      style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
+                    />
+                    <Typography variant="h6" fontWeight="bold" mt={1}>
+                      {recipe.title}
+                    </Typography>
+                    <Typography variant="body2" mt={1}>
+                      {recipe.summary}
+                    </Typography>
                   </Box>
-                ))
-              ) : (
-                <Typography>No recipes found</Typography>
-              )}
-            </Stack>
-          )}
-        </Box>
-      </Stack>
+                </Grid>
+              ))
+            ) : (
+              <Typography>No recipe ideas found</Typography>
+            )}
+          </Grid>
+        )}
+      </Box>
 
-      <Box className="footer">
-        <Typography variant="body2">© 2024 Modiehi Patience Malete</Typography>
+      <Box mt={4} p={2}>
+        <Typography variant="body2" textAlign="center">
+          © 2024 Modiehi Patience Malete
+        </Typography>
       </Box>
 
       <Modal
